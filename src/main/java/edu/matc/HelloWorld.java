@@ -18,7 +18,7 @@ public class HelloWorld {
         String output = "Hello Everyone!";
         return Response.status(200).entity(output).build();
     }*/
-
+    // Hello World
     @Produces("text/plain")
     @Path("/{param}")
     public Response getMessage(@PathParam("param") String msg) {
