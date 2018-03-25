@@ -1,7 +1,5 @@
 package edu.matc;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -20,10 +18,13 @@ public class HelloWorld {
         String output = "Hello Everyone!";
         return Response.status(200).entity(output).build();
     }*/
+
     @Produces("text/plain")
     @Path("/{param}")
     public Response getMessage(@PathParam("param") String msg) {
         String output = "Hello " + msg;
         return Response.status(200).entity(output).build();
     }
+
+
 }
