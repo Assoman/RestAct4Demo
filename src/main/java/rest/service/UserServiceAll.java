@@ -24,8 +24,13 @@ public class UserServiceAll {
         Logger logger = LogManager.getLogger(this.getClass());
         logger.debug("Return USERs: " + allUsers.size());
 
-        return Response.status(200).entity(allUsers.get(0).getId()
-                + " " + allUsers.get(0).getFirstName()
-                + " " + allUsers.get(0).getLastName()).build();
+        String output = "";
+        for (int i = 0; i < allUsers.size(); i++) {
+             output += allUsers.get(i).getId()
+                    + " " + allUsers.get(i).getFirstName()
+                    + " " + allUsers.get(i).getLastName()
+                    + "\n";
+        }
+        return Response.status(200).entity(output).build();
     }
 }

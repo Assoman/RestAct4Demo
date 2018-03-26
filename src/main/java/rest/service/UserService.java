@@ -27,13 +27,13 @@ public class UserService {
 
         if (!id.isEmpty()) {
             user = (User) genericDao.getById(Integer.parseInt(id));
-            logger.debug("Return USER ID: " + id);
-            return Response.status(200).entity(user.getId()
-                    + " " + user.getFirstName()
-                    + " " + user.getLastName()).build();
-        } else {
-            return Response.status(200).entity("Please, check the USER ID").build();
+            if (user != null) {
+                logger.debug("Return USER ID: " + id);
+                return Response.status(200).entity(user.getId()
+                        + " " + user.getFirstName()
+                        + " " + user.getLastName()).build();
+            }
         }
-
+        return Response.status(200).entity("Please, check the USER ID").build();
     }
 }
