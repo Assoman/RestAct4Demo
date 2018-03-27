@@ -16,7 +16,6 @@ public class UsersApplication extends Application {
     public Set<Class<?>> getClasses() {
         HashSet h = new HashSet<Class<?>>();
         h.add(UserService.class);
-        h.add(UserServiceAll.class);
         return h;
     }
 }

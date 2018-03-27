@@ -11,6 +11,8 @@ import javax.ws.rs.core.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
+
 @Path("/users")
 public class UserService {
     // Define what type of request this method responds to
@@ -35,5 +37,25 @@ public class UserService {
             }
         }
         return Response.status(200).entity("Please, check the USER ID").build();
+    }
+
+    @GET
+
+    //Define what type of content is produced
+    @Produces("text/plain")
+    public Response getAllUser() {
+        GenericDao genericDao = new GenericDao(User.class);
+        List<User> allUsers = genericDao.getAllUsersOrProducts();
+        Logger logger = LogManager.getLogger(this.getClass());
+        logger.debug("Return USERs: " + allUsers.size());
+
+        String output = "";
+        for (int i = 0; i < allUsers.size(); i++) {
+            output += allUsers.get(i).getId()
+                    + " " + allUsers.get(i).getFirstName()
+                    + " " + allUsers.get(i).getLastName()
+                    + "\n";
+        }
+        return Response.status(200).entity(output).build();
     }
 }
