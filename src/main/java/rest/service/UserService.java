@@ -1,5 +1,6 @@
 package rest.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import rest.entity.User;
 import rest.persistence.GenericDao;
 
@@ -7,9 +8,11 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
@@ -19,9 +22,10 @@ public class UserService {
     @GET
 
     //Define what type of content is produced
-    @Produces("text/plain")
+    @Produces({MediaType.APPLICATION_JSON})
+    //@Produces("application/json")
     @Path("/{id}")
-    public Response getUser(@PathParam("id") String id) {
+    public Response getUser(@PathParam("id") String id) throws JsonProcessingException {
 
         GenericDao genericDao = new GenericDao(User.class);
         User user = null;
@@ -31,9 +35,9 @@ public class UserService {
             user = (User) genericDao.getById(Integer.parseInt(id));
             if (user != null) {
                 logger.debug("Return USER ID: " + id);
-                return Response.status(200).entity(user.getId()
-                        + " " + user.getFirstName()
-                        + " " + user.getLastName()).build();
+                ObjectMapper objectMapper = new ObjectMapper();
+                String output = objectMapper.writeValueAsString(user);
+                return Response.status(200).entity(output).build();
             }
         }
         return Response.status(200).entity("Please, check the USER ID").build();
@@ -42,8 +46,10 @@ public class UserService {
     @GET
 
     //Define what type of content is produced
-    @Produces("text/plain")
-    public Response getAllUser() {
+    //@Produces("text/plain")
+    @Produces({MediaType.APPLICATION_JSON})
+    //@Produces("application/json")
+    public String getAllUser() {
         GenericDao genericDao = new GenericDao(User.class);
         List<User> allUsers = genericDao.getAllUsersOrProducts();
         Logger logger = LogManager.getLogger(this.getClass());
@@ -56,6 +62,6 @@ public class UserService {
                     + " " + allUsers.get(i).getLastName()
                     + "\n";
         }
-        return Response.status(200).entity(output).build();
+        return output;
     }
 }
